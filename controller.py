@@ -1,8 +1,10 @@
 from PyQt5.QtWidgets import *
 from view1 import Ui_window_boss_choice
-from view3 import Ui_window_battle
+from view2 import Ui_window_move_select
 from boss_setup import BossSetup
+from player_setup import PlayerSetup
 bsu = BossSetup()
+psu = PlayerSetup()
 
 
 class ControllerBossChoice(QMainWindow, Ui_window_boss_choice):
@@ -22,18 +24,38 @@ class ControllerBossChoice(QMainWindow, Ui_window_boss_choice):
         self.line_boss_name.setText("That is not a valid boss name")
 
 
-class ControllerBattle(QMainWindow, Ui_window_battle):
+class ControllerMoveChoice(QMainWindow, Ui_window_move_select):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
 
-        self.label_bHealth.setText(str(bsu.boss_hp))
+        self.button_enter.clicked.connect(lambda: self.move_select())
 
-        self.button_move1.clicked.connect(lambda: self.move_choice())
-        self.button_move2.clicked.connect(lambda: self.move_choice())
-        self.button_move3.clicked.connect(lambda: self.move_choice())
-        self.button_move4.clicked.connect(lambda: self.move_choice())
+    def move_select(self):
+        moves_left = int(self.label_2.text())
+        if self.radio_firaga.isChecked():
+            psu.move_choice("firaga")
+            self.label_2.setText(str(moves_left - 1))
 
-    def move_choice(self):
-        pass
+        if self.radio_splash.isChecked():
+            psu.move_choice("sparkling splash")
+            self.label_2.setText(str(moves_left - 1))
 
+        if self.radio_pigeon.isChecked():
+            psu.move_choice("pigeon raid")
+            self.label_2.setText(str(moves_left - 1))
+
+        if self.radio_slash.isChecked():
+            psu.move_choice("cross slash")
+            self.label_2.setText(str(moves_left - 1))
+
+        if self.radio_curaga.isChecked():
+            psu.move_choice("curaga")
+            self.label_2.setText(str(moves_left - 1))
+
+        if self.radio_spark.isChecked():
+            psu.move_choice("stamina spark")
+            self.label_2.setText(str(moves_left - 1))
+
+        if moves_left - 1 == 0:
+            self.close()

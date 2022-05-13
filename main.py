@@ -3,6 +3,9 @@ from controller_battle import *
 
 
 def main():
+    """
+    Starts the program
+    """
     app = QApplication([])
     window1 = ControllerBossChoice()
     window1.show()

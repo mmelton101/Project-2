@@ -1,14 +1,26 @@
 import move as m
 
 
-class BossSetup:
+class Boss:
+
+    """
+    A class that contains all the information for the boss
+    """
+
     def __init__(self):
+        """
+        sets up all base info for the boss
+        """
         self.boss_name = ""
         self.boss_move_list = []
         self.boss_hp = 0
         self.boss_mp = 0
 
-    def boss_selection(self, boss_selection):
+    def boss_selection(self, boss_selection: str) -> None:
+        """
+        Determines what boss was selected the than sets the boss' HP, MP, and movelist
+        :param boss_selection: The name of the boss the user selected
+        """
         if boss_selection == "sephiroth":
             self.boss_name = "Sephiroth"
             self.boss_hp = 1000

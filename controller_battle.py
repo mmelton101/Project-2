@@ -53,8 +53,15 @@ class ControllerBattle(QMainWindow, Ui_window_battle):
         self.button_move5.clicked.connect(lambda: self.move_choice(self.button_move5.text()))
         self.button_move6.clicked.connect(lambda: self.move_choice(self.button_move6.text()))
 
-    def move_choice(self, move):
+    def move_choice(self, move: str) -> None:
+        """
+        Decides what move the user chose from the button clicked then sends the move choice to move processor
+        Afterwards if the move could happen the boss chooses a move and ends the turn with updating
+        information on the screen
+        :param move: Name of the move retrieved from the name of the button clicked
+        """
         self.turn_end = False
+        self.text_battle_info.clear()
         if self.player_turn and self.win_condition(psu, bsu):
             self.turn_end, text = mp.player_move(psu, move, bsu)
             self.text_battle_info.append(text)
@@ -102,8 +109,16 @@ class ControllerBattle(QMainWindow, Ui_window_battle):
             self.label_move4.setText("HP:")
             self.label_move4cost.setText(str(psu.player_move_list[5].move_hp_cost))
 
-    def win_condition(self, player, boss):
+    def win_condition(self, player: psu, boss: bsu) -> bool:
+        """
+        Checks to see if either the boss or player HP has dropped below 0. If either characters HP dropped below 0
+        all buttons are disabled and a message is printed to the screen. If not, the game continues
+        :param player: all player information including HP and MP and movelist
+        :param boss: all boss information including HP and MP and movelist
+        :return: True if both characters have more than 0 HP. False otherwise
+        """
         if player.player_hp <= 0:
+            self.label_pHealth.setText("0")
             self.text_battle_info.append("GAME OVER. YOU LOSE")
             self.button_move1.setEnabled(False)
             self.button_move2.setEnabled(False)
@@ -113,6 +128,7 @@ class ControllerBattle(QMainWindow, Ui_window_battle):
             self.button_move6.setEnabled(False)
             return False
         elif boss.boss_hp <= 0:
+            self.label_bHealth.setText("0")
             self.text_battle_info.append("GAME OVER. YOU WIN")
             self.button_move1.setEnabled(False)
             self.button_move2.setEnabled(False)

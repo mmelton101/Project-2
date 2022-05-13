@@ -1,8 +1,16 @@
 import move as m
 
 
-class PlayerSetup:
+class Player:
+
+    """
+    A class that contains all the information for the player
+    """
+
     def __init__(self):
+        """
+        Creates all the moves that the player can select, set player HP and MP, and creates the player movelist
+        """
         attack = m.Move(0, 0, 50, "None", 0, 0, "Attack")
         guard = m.Move(0, 0, 0, "None", 0, 0, "Guard")
         self.firaga = m.Move(0, 25, 50, "Burn", 0, 0, "Firaga")
@@ -16,7 +24,12 @@ class PlayerSetup:
         self.player_hp = 1000
         self.player_mp = 500
 
-    def move_choice(self, move_selection):
+    def move_choice(self, move_selection: str) -> None:
+        """
+        Determines the name of the move the user selected and adds that move to the player list
+        if it has not already been added to the movelist
+        :param move_selection: name of the move the user selected
+        """
         move_list = ["Firaga", "Sparkling Splash", "Pigeon Raid", "Cross Slash", "Curaga", "Stamina Spark"]
 
         if move_selection == "firaga" and self.firaga not in self.player_move_list:

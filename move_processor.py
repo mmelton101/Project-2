@@ -4,18 +4,25 @@ se = StatusEffect()
 
 
 class MoveProcessor:
+
+    """
+    a class that process the moves of both the player and boss
+    """
+
     def __init__(self):
+        """
+        Sets up needed variables needed to accurately calculate damage and for the boss to choose a move
+        """
         self.player_guard = 1
         self.boss_guard = 1
         self.boss_move_count = 0
         self.boss_move = ""
         self.text = ""
         self.brass_knuckles = 1
-        self.boss_charge = False
         self.player_status_effect = ""
         self.boss_status_effect = ""
 
-    def player_move(self, player, player_move, boss):
+    def player_move(self, player, player_move: str, boss) -> bool and str:
         self.text = ""
         for move in player.player_move_list:
             if move.move_name == player_move:
@@ -50,6 +57,8 @@ class MoveProcessor:
         if player_move.move_name == "Curaga" and player_move.move_mp_cost <= player.player_mp:
             player.player_mp = player.player_mp - player_move.move_mp_cost
             player.player_hp = player.player_hp + player_move.move_hp_restored
+            if player.player_hp > 1000:
+                player.player_hp = 1000
             self.boss_guard = 1
             self.text = f"{player.player_name} used {player_move.move_name}. {player.player_name} regained {player_move.move_hp_restored} HP."
             return True, self.text
@@ -89,7 +98,13 @@ class MoveProcessor:
                 self.text = f"{player.player_name} don't have enough MP to cast {player_move.move_name}"
                 return False, self.text
 
-    def boss_turn(self, boss, player):
+    def boss_turn(self, boss, player) -> bool and str:
+        """
+        Decides what boss AI should be called based on which boss is selected
+        :param boss: object with all the info the boss has
+        :param player: object with all the info the player has
+        :return: returns the text that will be printed to the screen and whether the boss turn has ended or not
+        """
         if boss.boss_name == "Sephiroth":
             turn_end, text = self.sephiroth_move_selection(boss, player)
             return turn_end, text
@@ -97,22 +112,28 @@ class MoveProcessor:
             turn_end, text = self.tendo_move_selection(boss, player)
             return turn_end, text
 
-    def sephiroth_move_selection(self, boss, player):
+    def sephiroth_move_selection(self, boss, player) -> bool and str:
+        """
+        AI the boss uses to decide what move it will use for its turn and then uses the move
+        :param boss: object with all the info the boss has
+        :param player: object with all the info the player has
+        :return: returns the text that will be printed to the screen and whether the boss turn has ended or not
+        """
         self.text = ""
         if self.boss_move_count == 6:
             self.boss_move_count = 0
 
         if self.boss_status_effect == "Cold":
             self.boss_status_effect = se.continue_effect(self.boss_status_effect)
-            return False, f"{boss.boss_name} caught a cold and couldn't move."
+            return False, f"{boss.boss_name} caught a cold and couldn't move.\n"
         elif self.boss_status_effect == "Burn":
             self.boss_status_effect = se.continue_effect(self.boss_status_effect)
             boss.boss_hp = boss.boss_hp - 50
-            self.text = f"{boss.boss_name} was burned and took 50 damage."
+            self.text = f"{boss.boss_name} was burned and took 50 damage.\n"
         elif self.boss_status_effect == "Bleed":
             self.boss_status_effect = se.continue_effect(self.boss_status_effect)
             boss.boss_hp = boss.boss_hp - 100
-            self.text = f"{boss.boss_name} started to bleed and took 100 damage."
+            self.text = f"{boss.boss_name} started to bleed and took 100 damage.\n"
 
         if self.boss_move_count == 0:
             self.boss_move_count += 1
@@ -172,22 +193,28 @@ class MoveProcessor:
             self.player_guard = 1
             return False, self.text
 
-    def tendo_move_selection(self, boss, player):
+    def tendo_move_selection(self, boss, player) -> bool and str:
+        """
+        AI the boss uses to decide what move it will use for its turn and then uses the move
+        :param boss: object with all the info the boss has
+        :param player: object with all the info the player has
+        :return: returns the text that will be printed to the screen and whether the boss turn has ended or not
+        """
         self.text = ""
         if self.boss_move_count == 4:
             self.boss_move_count = 0
 
         if self.boss_status_effect == "Cold":
             self.boss_status_effect = se.continue_effect(self.boss_status_effect)
-            return False, f"{boss.boss_name} caught a cold and couldn't move."
+            return False, f"{boss.boss_name} caught a cold and couldn't move.\n"
         elif self.boss_status_effect == "Burn":
             self.boss_status_effect = se.continue_effect(self.boss_status_effect)
             boss.boss_hp = boss.boss_hp - 50
-            self.text = f"{boss.boss_name} was burned and took 50 damage."
+            self.text = f"{boss.boss_name} was burned and took 50 damage.\n"
         elif self.boss_status_effect == "Bleed":
             self.boss_status_effect = se.continue_effect(self.boss_status_effect)
             boss.boss_hp = boss.boss_hp - 100
-            self.text = f"{boss.boss_name} started to bleed and took 100 damage."
+            self.text = f"{boss.boss_name} started to bleed and took 100 damage.\n"
 
         if boss.boss_hp <= 500 and self.brass_knuckles == 1:
             self.brass_knuckles = 1.5

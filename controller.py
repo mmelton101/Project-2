@@ -16,12 +16,11 @@ class ControllerBossChoice(QMainWindow, Ui_window_boss_choice):
 
     def boss_select(self):
         boss_choices = ["sephiroth", "tendo"]
-        boss_choice = self.line_boss_name.text().lower().strip()
+        boss_choice = self.comboBox.currentText().lower()
         for name in boss_choices:
             if boss_choice == name:
                 bsu.boss_selection(boss_choice)
                 self.close()
-        self.line_boss_name.setText("That is not a valid boss name")
 
 
 class ControllerMoveChoice(QMainWindow, Ui_window_move_select):
@@ -33,29 +32,36 @@ class ControllerMoveChoice(QMainWindow, Ui_window_move_select):
 
     def move_select(self):
         moves_left = int(self.label_2.text())
+        move_list_length = len(psu.player_move_list)
         if self.radio_firaga.isChecked():
             psu.move_choice("firaga")
-            self.label_2.setText(str(moves_left - 1))
+            if len(psu.player_move_list) > move_list_length:
+                self.label_2.setText(str(moves_left - 1))
 
         if self.radio_splash.isChecked():
             psu.move_choice("sparkling splash")
-            self.label_2.setText(str(moves_left - 1))
+            if len(psu.player_move_list) > move_list_length:
+                self.label_2.setText(str(moves_left - 1))
 
         if self.radio_pigeon.isChecked():
             psu.move_choice("pigeon raid")
-            self.label_2.setText(str(moves_left - 1))
+            if len(psu.player_move_list) > move_list_length:
+                self.label_2.setText(str(moves_left - 1))
 
         if self.radio_slash.isChecked():
             psu.move_choice("cross slash")
-            self.label_2.setText(str(moves_left - 1))
+            if len(psu.player_move_list) > move_list_length:
+                self.label_2.setText(str(moves_left - 1))
 
         if self.radio_curaga.isChecked():
             psu.move_choice("curaga")
-            self.label_2.setText(str(moves_left - 1))
+            if len(psu.player_move_list) > move_list_length:
+                self.label_2.setText(str(moves_left - 1))
 
         if self.radio_spark.isChecked():
             psu.move_choice("stamina spark")
-            self.label_2.setText(str(moves_left - 1))
+            if len(psu.player_move_list) > move_list_length:
+                self.label_2.setText(str(moves_left - 1))
 
-        if moves_left - 1 == 0:
+        if len(psu.player_move_list) == 6:
             self.close()

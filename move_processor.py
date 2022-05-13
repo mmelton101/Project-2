@@ -167,7 +167,7 @@ class MoveProcessor:
 
             if self.player_status_effect == "":
                 self.player_status_effect = se.set_status_effect(boss.boss_move_list[4])
-                if self.boss_status_effect == "":
+                if self.player_status_effect != "":
                     self.text = f"{player.player_name} were inflicted with {self.boss_status_effect}\n"
 
             self.text = self.text + f"{boss.boss_name} used {boss.boss_move_list[4].move_name}. {boss.boss_name} dealt {boss.boss_move_list[4].move_damage / self.player_guard} damage"
@@ -179,7 +179,7 @@ class MoveProcessor:
 
             if self.player_status_effect == "":
                 self.player_status_effect = se.set_status_effect(boss.boss_move_list[5])
-                if self.boss_status_effect == "":
+                if self.player_status_effect != "":
                     self.text = f"{player.player_name} were inflicted with {self.boss_status_effect}\n"
 
             self.text = self.text + f"{boss.boss_name} used {boss.boss_move_list[5].move_name}. {boss.boss_name} dealt {boss.boss_move_list[5].move_damage / self.player_guard} damage"
